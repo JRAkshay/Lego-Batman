@@ -9,10 +9,15 @@
 #define ESCAPE 27
 #define W 119
 #define S 115
+#define C 99
+#define P 112
+#define A 97
+#define D 100
+
 
 /* The number of our GLUT window */
 int window;
-GLfloat     rot;                       // Angle For The Triangle ( NEW )
+GLfloat     rot,roth=0;                       // Angle For The Triangle ( NEW )
 GLfloat     zoom = -50.0f;
 
 GLfloat lhandx = -3.0f;
@@ -24,10 +29,10 @@ GLfloat rlegx = 1.5f;
 GLfloat llegx = -1.5f;
 
 GLfloat hhktv = 3.0f;
-
-/* storage for one texture  */
+int a=0.0f,b=1.0f,c=-0.0f,d=0.0f,e=-0.1f,f=0.0f,g=1.0f,h=-0.0f,i=-0.0f,j=1.0f;
 int texture[1];
 
+/*
 struct Image {
     unsigned long sizeX;
     unsigned long sizeY;
@@ -143,10 +148,10 @@ void LoadGLTextures() {
     glTexImage2D(GL_TEXTURE_2D, 0, 3, image1->sizeX, image1->sizeY, 0, GL_RGB, GL_UNSIGNED_BYTE, image1->data);
 };
 /* A general OpenGL initialization function.  Sets all of the initial parameters. */
+ */
+
 void InitGL(int Width, int Height)	        // We call this right after our OpenGL window is created.
 {
-  LoadGLTextures();				// Load The Texture(s)
-  glEnable(GL_TEXTURE_2D);			// Enable Texture Mapping
   glClearColor(0.0f, 0.0f, 0.0f, 0.0f);		// This Will Clear The Background Color To Black
   glClearDepth(1.0);				// Enables Clearing Of The Depth Buffer
   glDepthFunc(GL_LESS);				// The Type Of Depth Test To Do
@@ -250,13 +255,11 @@ void Leg(GLfloat pos)
   glVertex3f(-1.0f+pos,-3.0f,3.0f);  //LeftShort
   glVertex3f(-1.0f+pos,-2.0f,3.0f);  //LeftShort
   glVertex3f(-1.0f+pos,-2.0f,1.0f);  //LeftShort
-  //glVertex3f(1.0f,-3.0f,1.0f);   //LeftShort
   glEnd();
 }
 
 void torso()
 {
-glBindTexture(GL_TEXTURE_2D, texture[0]);
   glBegin(GL_POLYGON);
   glColor3f(0.5f,0.5f,0.5f);  //Back
   glTexCoord2f(1.0f, 0.0f); glVertex3f(1.0f,1.0f,1.01f); //Back
@@ -665,7 +668,7 @@ void belt()
   glVertex3f(0.5f,0.4f,1.01f);  //Front
   glEnd();
 
-  //--------------------------------
+
 
   glBegin(GL_POLYGON);
   glColor3f(1.0f,1.0f,0.0f);  //Front
@@ -814,6 +817,8 @@ void head()
   glEnd();
 }
 
+
+
 /* The main drawing function. */
 void DrawGLScene()
 {
@@ -821,57 +826,87 @@ void DrawGLScene()
 
   glLoadIdentity();				// Reset The View
   glTranslatef(0.0f,0.0f,zoom);
-  glRotatef(rot,0.0f,1.0f,0.0f);
+  glRotatef(rot,a,b,0.0f);
+  glTranslatef(-0.0f,c,0.0f);
   Leg(rlegx+hhktv);
   glLoadIdentity();				// Reset The View
   glTranslatef(0.0f,0.0f,zoom);
-  glRotatef(rot,0.0f,1.0f,0.0f);
+  glRotatef(rot,a,b,0.0f);
+  glTranslatef(-0.0f,c,0.0f);
   Leg(llegx-hhktv);
+
   glLoadIdentity();				// Reset The View
   glTranslatef(0.0f,(belty+hhktv),zoom);
-  glRotatef(rot,0.0f,1.0f,0.0f);
+  glRotatef(rot,0.0f,j,0.0f);
   belt();
+
   glLoadIdentity();				// Reset The View
   glTranslatef(0.0f,(torsoy+hhktv),zoom);
-  glRotatef(rot,0.0f,1.0f,0.0f);
+  glRotatef(rot,0.0f,j,0.0f);
   torso();
+
   glLoadIdentity();				// Reset The View
   glTranslatef(0.0f,(heady+hhktv),zoom);
-  glRotatef(rot,0.0f,1.0f,0.0f);
+  glRotatef(rot,0.0f,j,0.0f);
   head();
+
   glLoadIdentity();				// Reset The View
   glTranslatef(0.0f,1.1f,zoom);
-  glRotatef(rot,0.0f,1.0f,0.0f);
+  glRotatef(rot,0.0f,j,0.0f);
   pelvis();
 
   glLoadIdentity();				// Reset The View
-  glTranslatef(0.0f,0.6f,zoom);
-  glRotatef(rot,0.0f,1.0f,0.0f);
+  glTranslatef(d,e,zoom);
+  glRotatef(roth,f,g,0.0f);
+  glTranslatef(h,i,0.0f);
   handr(rhandx+hhktv);
   glLoadIdentity();
-  glTranslatef(0.0f,0.6f,zoom);
-  glRotatef(rot,0.0f,1.0f,0.0f);
+  glTranslatef(d,e,zoom);
+  glRotatef(roth,f,g,0.0f);
+  glTranslatef(h,i,0.0f);
   handl(lhandx-hhktv);
-  //Leg();
-
-
-  // since this is double buffered, swap the buffers to display what just got drawn.
   glutSwapBuffers();
 }
+void Gomenu(int value)
+{
+ switch(value)
+ {
+  case 1:
+    	glClearColor(0.75f,0.0f,0.0f,0.0f);
+	break;
+  case 2:
+      
+  	glClearColor(0.0f,0.0f,0.75f,0.0f);
+	break;
+  case 3:
+      
+   	glClearColor(0.0f,0.75f,0.0f,0.0f);
+	break;
+  case 4:
+      
+   	glClearColor(0.0f,0.0f,0.0f,0.0f);
+	break;
+  case 5:
+    	exit(0);
+     	break;
+  case 6:
+	a=0.0f,b=1.0f,c=-0.0f,d=0.0f,e=-0.1f,f=0.0f,g=1.0f,h=-0.0f,i=-0.0f,j=1.0f,rot=0,roth=0;
+        break;
+  case 7:
+        a=0.0f,b=0.0f,c=-0.0f,d=6.0f,e=6.0f,f=1.0f,g=0.0f,h=-6.0f,i=-6.0f,j=0.0f,rot=0,roth=0;
+        break;
+ }
+glutPostRedisplay();
+glutSwapBuffers();
+}
 
-/* The function called whenever a key is pressed. */
+
 void keyPressed(unsigned char key, int x, int y)
 {
-    /* avoid thrashing this procedure */
     usleep(100);
-
-    /* If escape is pressed, kill everything. */
     if (key == ESCAPE)
     {
-	/* shut down our window */
 	glutDestroyWindow(window);
-
-	/* exit the program...normal termination. */
 	exit(0);
     }
     if (key == W)
@@ -884,64 +919,91 @@ void keyPressed(unsigned char key, int x, int y)
       if(hhktv < 3.0f)
       hhktv +=0.2f;
     }
+   if (key == C)
+    {
+     a=0.0f,b=1.0f,c=-0.0f,d=0.0f,e=-0.1f,f=0.0f,g=1.0f,h=-0.0f,i=-0.0f,j=1.0f,rot=0,roth=0;
+    }
+    if (key == P)
+    {
+      a=0.0f,b=0.0f,c=-0.0f,d=6.0f,e=6.0f,f=1.0f,g=0.0f,h=-6.0f,i=-6.0f,j=0.0f,rot=0,roth=0;
+    }
+    if (key == A)
+      { if(b==0.0f)
+	{
+	  if(roth>90)
+	  roth=roth;
+	  if(roth<90)
+	  roth += 5.0f;
+	}
+      }
+    if (key == D)
+      { if(b==0.0f)
+	{
+	if(roth<(-90))
+	  roth=roth;
+	if(roth>(-90))
+	  roth -= 5.0f;
+	}
+      }
 }
-void specialKeys( int key, int x, int y ) {
+void specialKeys( int key, int x, int y ) 
+{
   if (key == GLUT_KEY_LEFT)
+{
     rot += 5.0f;
+    if(b==1.0f)
+    roth=rot;
+}
   else if (key == GLUT_KEY_RIGHT)
+{
     rot -= 5.0f;
+    if(b==1.0f)
+    roth=rot;
+}
     else if (key == GLUT_KEY_UP)
       zoom += 0.5f;
       else if (key == GLUT_KEY_DOWN)
         zoom -= 0.5f;
+glutPostRedisplay();
+}
 
-  glutPostRedisplay();
+void createmenu(void)
+{
+int sub1=glutCreateMenu(Gomenu);
+glutAddMenuEntry("Red",1);
+glutAddMenuEntry("Blue",2);
+glutAddMenuEntry("Green",3);
+glutAddMenuEntry("Black",4);
+int sub2=glutCreateMenu(Gomenu);
+glutAddMenuEntry("Circular",6);
+glutAddMenuEntry("Perpendicular",7);
+glutCreateMenu(Gomenu);
+glutAddSubMenu("Colors",sub1);
+glutAddSubMenu("Rotate Type",sub2);
+glutAddMenuEntry("Exit",5);
+glutAttachMenu(GLUT_RIGHT_BUTTON);
 
 }
 
 int main(int argc, char **argv)
 {
-  /* Initialize GLUT state - glut will take any command line arguments that pertain to it or
-     X Windows - look at its documentation at http://reality.sgi.com/mjk/spec3/spec3.html */
+  printf("******************************************************************");
+  printf("\n\t\t\tLEGOBATMAN\n");
+  printf("******************************************************************");
+  printf("\nHow to Control: \n W->Contract\n S->Expand\n A->Hand Rotation (Backwards)\n D->Hand Rotation (Forward)\n C->Circular Mode\n P->Hand Movement Mode\n UpArrow->ZoomIn\n DownArrow->ZoomOut\n LeftandRightArrows->360degreeRotation\n");
+
   glutInit(&argc, argv);
-
-  /* Select type of Display mode:
-     Double buffer
-     RGBA color
-     Alpha components supported
-     Depth buffer */
-  glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_ALPHA | GLUT_DEPTH);
-
-  /* get a 640 x 480 window */
+  glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
   glutInitWindowSize(640, 480);
-
-  /* the window starts at the upper left corner of the screen */
   glutInitWindowPosition(0, 0);
-
-  /* Open a window */
   window = glutCreateWindow("LEGO Batman");
-
-  /* Register the function to do all our OpenGL drawing. */
-  glutDisplayFunc(&DrawGLScene);
-
-  /* Go fullscreen.  This is as soon as possible. */
+  glutDisplayFunc(DrawGLScene);
   glutFullScreen();
-
-  /* Even if there are no events, redraw our gl scene. */
-  glutIdleFunc(&DrawGLScene);
-
-  /* Register the function called when our window is resized. */
-  glutReshapeFunc(&ReSizeGLScene);
-
-  /* Register the function called when the keyboard is pressed. */
-  glutKeyboardFunc(&keyPressed);
-  glutSpecialFunc(&specialKeys);
-
-  /* Initialize our window. */
-  InitGL(640, 480);
-
-  /* Start Event Processing Engine */
+  glutIdleFunc(DrawGLScene);
+  glutReshapeFunc(ReSizeGLScene);
+  glutKeyboardFunc(keyPressed);
+  glutSpecialFunc(specialKeys);
+  createmenu();
+ InitGL(640, 480);
   glutMainLoop();
-
-  return 1;
 }
